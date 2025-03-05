@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>gymtime</RootNamespace>
     <MFProjectType>Native</MFProjectType>
+    <StartupObject>Program1</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>.\bin\x86\Debug\</OutputPath>
@@ -42,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program1.cbl" />
+    <Compile Include="Program2.cbl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Micro Focus\Visual COBOL\v1.0\MicroFocus.COBOL.targets" />
 </Project>
