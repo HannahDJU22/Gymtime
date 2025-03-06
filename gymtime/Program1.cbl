@@ -17,28 +17,30 @@
            05 WS-SIDE-LINE PIC X VALUE '|'.
        01 WS-STAR-LINE PIC X(100) VALUE ALL '*'.
       *01 WS-COUNTER PIC 99 VALUE 0.
+       COPY "TRAINING_PLAN.CPY".
+       COPY "PUSH_PROGRAM.CPY".
 
        SCREEN SECTION.
 
        01 INIT-SCREEN.
-       03 HORIZONTAL-LINE1.
-         05 LINE 1 COL 1 PIC X(80) USING WS-STAR-LINE.
+         03 HORIZONTAL-LINE1.
+           05 LINE 1 COL 1 PIC X(80) USING WS-STAR-LINE.
 
-       03 HORIZONTAL-LINE2.
-         05 LINE 26 COL 1 PIC X(80) USING WS-STAR-LINE.
+         03 HORIZONTAL-LINE2.
+           05 LINE 26 COL 1 PIC X(80) USING WS-STAR-LINE.
 
-       03 VERTICAL-LINE1.
-         05 LINE 1 COL 1.
-         05 OCCURS 25 TIMES.
-           10 USING WS-SIDE-LINE LINE + 1 COL 01 PIC X.
+         03 VERTICAL-LINE1.
+           05 LINE 1 COL 1.
+           05 OCCURS 25 TIMES.
+             10 USING WS-SIDE-LINE LINE + 1 COL 01 PIC X.
 
-       03 VERTICAL-LINE2.
-         05 LINE 1 COL 1.
-         05 OCCURS 25 TIMES.
-           10 USING WS-SIDE-LINE LINE + 1 COL 80 PIC X.
+         03 VERTICAL-LINE2.
+           05 LINE 1 COL 1.
+           05 OCCURS 25 TIMES.
+             10 USING WS-SIDE-LINE LINE + 1 COL 80 PIC X.
 
        01 WELCOME-SCREEN.
-        
+
          03 LINE 9 COLUMN 5 PIC XX FROM VERTICAL-SIGN.
          03 LINE 8 COLUMN 6 PIC XX FROM VERTICAL-SIGN.
          03 LINE 7 COLUMN 7 PIC XX FROM VERTICAL-SIGN.
@@ -89,13 +91,7 @@
          03 LINE 18 COLUMN 45 PIC X(17) VALUE 'MAKE YOUR CHOICE '.
          03 LINE 18 COLUMN 65 PIC X USING YES-OR-NO.
 
-       01 CHOOSE-TRAINING-SCREEN.
-         03 BLANK SCREEN.
-         03 LINE 9 COLUMN 15 PIC X(12) VALUE 'YAY'.
-         03 LINE 12 COLUMN 15 PIC X(30) VALUE 'PRESS ENTER!'.
-         *> använda sub-modul (gym_program) för de olika programmen
-         *> push, pull, legs
-         *> en screen för upplägget 5*5 alt 3*10
+         *> en screen ELLER SUBMODUL? för upplägget 5*5 alt 3*10
 
        01 SNOOZE-SCREEN.
          03 BLANK SCREEN.
@@ -103,26 +99,41 @@
          *> väljer vilken träning (push/pull/legs)
          03 LINE 9 COLUMN 15 PIC X(12) VALUE 'LAZY BASTARD'.
          03 LINE 12 COLUMN 15 PIC X(30) VALUE 'PRESS ENTER!'.
-      *  03 LINE 14 COLUMN 15 PIC X(12) USING YES-OR-NO.
+ 
+       01 PLAN-SCREEN.
+         03 BLANK SCREEN.
 
+       01 PUSH-SCREEN.
+         03 LINE 9 COLUMN 15 PIC X(30)
+            VALUE 'EXERCISES FOR PUSH TRAINING'.
+         03 LINE 10 COLUMN 15 PIC X VALUE SPACE.
+      
 
        PROCEDURE DIVISION.
            DISPLAY INIT-SCREEN
-
            DISPLAY WELCOME-SCREEN
            ACCEPT WELCOME-SCREEN
-
-           EVALUATE TRUE
-               WHEN YES-TO-GYM
-                   DISPLAY CHOOSE-TRAINING-SCREEN
-                  
-               WHEN NO-TO-GYM
-                   DISPLAY SNOOZE-SCREEN
-     
-           END-EVALUATE
-           
-      
+           PERFORM CHOOSE
 
            GOBACK.
-      
-       
+
+       CHOOSE SECTION.
+           EVALUATE TRUE
+               WHEN YES-TO-GYM
+                   CALL 'gym_program' USING TRAINING-PLAN
+                   DISPLAY PLAN-SCREEN
+                   PERFORM PLAN
+               WHEN NO-TO-GYM
+                   DISPLAY SNOOZE-SCREEN
+           END-EVALUATE.
+
+       PLAN SECTION.
+           EVALUATE TRUE
+               WHEN PUSH-PLAN
+                   DISPLAY PUSH-SCREEN
+                   CALL 'push_program' USING PUSH-PROGRAM
+               WHEN PULL-PLAN
+                   DISPLAY 'EXERCISES FOR PULL TRAINING'
+               WHEN LEGS-PLAN
+                   DISPLAY 'EXERCISES FOR LEGS TRAINING'
+           END-EVALUATE.

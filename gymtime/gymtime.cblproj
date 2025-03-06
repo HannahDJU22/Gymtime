@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Program1.cbl" />
     <Compile Include="submodules\gym_program.cbl" />
+    <Compile Include="submodules\push_program.cbl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="copys\" />
