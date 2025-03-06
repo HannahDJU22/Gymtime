@@ -10,6 +10,7 @@
     <RootNamespace>gymtime</RootNamespace>
     <MFProjectType>Native</MFProjectType>
     <StartupObject>Program1</StartupObject>
+    <MFDependencyPaths>.\copys</MFDependencyPaths>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>.\bin\x86\Debug\</OutputPath>
@@ -43,7 +44,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program1.cbl" />
-    <Compile Include="Program2.cbl" />
+    <Compile Include="submodules\gym_program.cbl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="copys\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Micro Focus\Visual COBOL\v1.0\MicroFocus.COBOL.targets" />
 </Project>
